@@ -1,6 +1,7 @@
 package blogposts_test
 
 import (
+	blogposts "github.com/exasperlnc/blogposts"
 	"testing"
 	"testing/fstest"
 )
