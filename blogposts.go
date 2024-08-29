@@ -8,8 +8,9 @@ import (
 )
 
 type Post struct {
-	Title string
+	Title			  string
 	Description string
+	Tags        []string
 }
 
 func NewPostsFromFS(fileSystem fs.FS) ([]Post, error) {
@@ -40,12 +41,13 @@ func getPost(fileSystem fs.FS, fileName string) (Post, error) {
 const (
 	titleSeparator               = "Title: "
 	descriptionSeparator         = "Description: "
+	tagSeparator 								 = "Tags: "
 )
 
 func newPost(postBody io.Reader) (Post, error) {
 	scanner := bufio.NewScanner(postBody)
 
-	readMetaLine := func(tagName string) string {
+	readMetaLine := func(tagName string) string {	
 		scanner.Scan()
 		return strings.TrimPrefix(scanner.Text(), tagName)
 	}
@@ -53,5 +55,6 @@ func newPost(postBody io.Reader) (Post, error) {
 	return Post{
 		Title: readMetaLine(titleSeparator),
 	  Description: readMetaLine(descriptionSeparator),
+		Tags:        strings.Split(readMetaLine(tagSeparator), ", "),
 	}, nil
 }
